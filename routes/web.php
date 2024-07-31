@@ -65,6 +65,8 @@
     Route::post('/product/search', [FrontendController::class, 'productSearch'])->name('product.search');
     Route::get('/product-cat/{slug}', [FrontendController::class, 'productCat'])->name('product-cat');
     Route::get('/product-sub-cat/{slug}/{sub_slug}', [FrontendController::class, 'productSubCat'])->name('product-sub-cat');
+    // add route for Services Pro users
+    Route::get('/services-pro', [FrontendController::class, 'servicePro'])->name('services');
 // Cart section
     Route::get('/add-to-cart/{slug}', [CartController::class, 'addToCart'])->name('add-to-cart')->middleware('user');
     Route::post('/add-to-cart', [CartController::class, 'singleAddToCart'])->name('single-add-to-cart')->middleware('user');
@@ -194,6 +196,24 @@
         Route::post('change-password', [HomeController::class, 'changPasswordStore'])->name('change.password');
 
     });
+
+
+// User Pro section start
+Route::group(['prefix' => '/user-pro', 'middleware' => ['user']], function () {
+    Route::get('/', [HomeController::class, 'index'])->name('user-pro');
+    // Profile
+    Route::get('/profile', [HomeController::class, 'profile'])->name('user-profile');
+    Route::post('/profile/{id}', [HomeController::class, 'profileUpdate'])->name('user-profile-update');
+    //  Service
+    Route::get('/order', "HomeController@orderIndex")->name('user.order.index');
+    Route::get('/order/show/{id}', "HomeController@orderShow")->name('user.order.show');
+    Route::delete('/order/delete/{id}', [HomeController::class, 'userOrderDelete'])->name('user.order.delete');
+
+    // Password Change
+    Route::get('change-password', [HomeController::class, 'changePassword'])->name('user.change.password.form');
+    Route::post('change-password', [HomeController::class, 'changPasswordStore'])->name('change.password');
+
+});
 
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
         Lfm::routes();

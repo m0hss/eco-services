@@ -1539,6 +1539,7 @@
 .small-banner {
     padding: 30px 0;
     padding-bottom: 0;
+    text-align: center;
 }
 .small-banner .single-banner {
     overflow: hidden;
@@ -1552,14 +1553,14 @@
     transition: all 0.4s ease;
 }
 .small-banner .single-banner .content {
-    position: absolute;
+    /* position: absolute;
     left: 0;
-    top: 50%;
+    top: 28%; */
     transform: translateY(-50%);
-    padding-left: 35px;
+    padding-top: 60px;
 }
 .small-banner .single-banner h3 {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
     text-transform: capitalize;
     color: #333;
@@ -1576,7 +1577,6 @@
 }
 .small-banner .single-banner a {
     color: #333;
-    margin-top: 22px;
     display: block;
     font-size: 12px;
     font-weight: 500;
@@ -4686,7 +4686,94 @@
     border: none;
 }
 /*======================================
-   End Shop Blog CSS
+   End Blog CSS
+========================================*/
+
+/*======================================
+  Services CSS
+========================================*/
+
+
+.services {
+    padding-top: 42px;
+    padding-bottom: 75px;
+  }
+.services .well-title {
+    text-transform: uppercase;
+    color: #f7941d;
+    text-align: center;
+}
+.services .container .grid_6 {
+    width: 436px;
+    margin: auto;
+    padding-top: 22px;
+}
+  
+.services .container .grid_6 h3 {
+  color: #404b52;
+  text-transform: uppercase;
+  margin-top: 18px;
+  }
+.services .container .grid_6 p {
+    margin-top: 18px;
+  }
+.services .container .grid_6 .btn {
+    margin-top: 15px;
+}
+
+
+.well9 {
+    background-color: #eaeff3;
+    width: 100%;
+}
+.well9 .container {
+    max-width: 1500px;
+
+}
+.well9 .well-title h2{
+    text-transform: uppercase;
+    font: 700 38px/38px;
+    color: #404b52;
+    text-align: center;
+    margin-top: 21px;
+}
+.well9 .well-title p{
+  text-transform: none;
+  color: #404b52;
+  font-size: 22px;
+  text-align: center;
+  margin-top: 21px;
+}
+
+.well9 .index-list {
+  counter-reset: li;
+  margin-top: 48px;
+}
+
+.well9 .index-list li {
+    position: relative;
+    background: #ffffff;
+    padding: 30px 33px 22px 82px;
+    border: 1px solid #ededed;
+    margin-bottom: 12px;
+  }
+  .well9 .index-list p {
+    color: #9b9b9b;
+    font-size: 24px;
+    line-height: 21px;
+  }
+  .well9 .index-list li::before {
+    content: counter(li) ".";
+    counter-increment: li;
+    font: 700 30px/12px 'Archivo Narrow', sans-serif;
+    color: #dc6226;
+    position: absolute;
+    left: 34px;
+    top: 32px;
+  }
+
+/*======================================
+  End Services CSS
 ========================================*/
 
 /*======================================

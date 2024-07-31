@@ -35,7 +35,11 @@
     <li class="nav-item">
         <a class="nav-link" href="{{route('user.order.index')}}">
             <i class="fas fa-hammer fa-chart-area"></i>
+            @if(auth()->check() && auth()->user()->role == 'user_pro')
+            <span>Services</span>
+            @else
             <span>Orders</span>
+            @endif
         </a>
     </li>
 

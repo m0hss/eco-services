@@ -73,14 +73,23 @@
                     <div class="search-bar-top">
                         <div class="search-bar">
                             <select>
-                                <option >All Category</option>
-                                @foreach(Helper::getAllCategory() as $cat)
-                                    <option>{{$cat->title}}</option>
-                                @endforeach
+                                @auth
+                                    @if(Auth::user()->role == 'user_pro')
+                                        <option>All Services</option>
+                                        {{-- @foreach(Helper::getAllServices() as $service) <!-- Assuming you have a similar method for services -->
+                                            <option>{{ $service->title }}</option>
+                                        @endforeach --}}
+                                    @else
+                                        <option>All Categories</option>
+                                        @foreach(Helper::getAllCategory() as $cat)
+                                            <option>{{ $cat->title }}</option>
+                                        @endforeach
+                                    @endif
+                                @endauth
                             </select>
-                            <form method="POST" action="{{route('product.search')}}">
+                            <form method="POST" action="{{ route('product.search') }}">
                                 @csrf
-                                <input name="search" placeholder="Search Products Here....." type="search">
+                                <input name="search" placeholder="{{ Auth::check() && Auth::user()->role == 'user_pro' ? 'Search Services Here.....' : 'Search Products Here.....' }}" type="search">
                                 <button class="btnn" type="submit"><i class="ti-search"></i></button>
                             </form>
                         </div>
@@ -186,15 +195,28 @@
                         <div class="menu-area">
                             <!-- Main Menu -->
                             <nav class="navbar navbar-expand-lg">
-                                <div class="navbar-collapse">	
-                                    <div class="nav-inner">	
+                                <div class="navbar-collapse"> 
+                                    <div class="nav-inner">  
                                         <ul class="nav main-menu menu navbar-nav">
                                             <li class="{{Request::path()=='home' ? 'active' : ''}}"><a href="{{route('home')}}">Home</a></li>
                                             <li class="{{Request::path()=='about-us' ? 'active' : ''}}"><a href="{{route('about-us')}}">About Us</a></li>
-                                            <li class="@if(Request::path()=='product-grids'||Request::path()=='product-lists')  active  @endif"><a href="{{route('product-grids')}}">Products</a><span class="new">New</span></li>												
+                                            
+                                            @auth
+                                                @if(Auth::user()->role == 'user_pro')
+                                                    <!-- Show Services for 'user_pro' -->
+                                                    <li class="{{Request::is('services*') ? 'active' : ''}}"><a href="{{route('services')}}">Services</a><span class="new">PRO</span></li>
+                                                @else
+                                                    <!-- Show Products and Categories for other roles -->
+                                                    <li class="@if(Request::is('product-grids','product-lists')) active @endif"><a href="{{route('product-grids')}}">Products</a><span class="new">New</span></li>
+                                                    {{Helper::getHeaderCategory()}}
+                                                @endif
+                                            @else
+                                                <!-- Default view for non-authenticated users -->
+                                                <li class="@if(Request::is('product-grids','product-lists')) active @endif"><a href="{{route('product-grids')}}">Products</a><span class="new">New</span></li>
                                                 {{Helper::getHeaderCategory()}}
-                                            <li class="{{Request::path()=='blog' ? 'active' : ''}}"><a href="{{route('blog')}}">Blog</a></li>									
-                                               
+                                            @endauth
+                                            
+                                            <li class="{{Request::path()=='blog' ? 'active' : ''}}"><a href="{{route('blog')}}">Blog</a></li>
                                             <li class="{{Request::path()=='contact' ? 'active' : ''}}"><a href="{{route('contact')}}">Contact Us</a></li>
                                         </ul>
                                     </div>
