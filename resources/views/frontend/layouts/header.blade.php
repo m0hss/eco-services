@@ -26,8 +26,10 @@
                             @auth 
                                 @if(Auth::user()->role=='admin')
                                     <li><i class="ti-user"></i> <a href="{{route('admin')}}"  target="_blank">Dashboard</a></li>
-                                @else 
+                                @elseif (Auth::user()->role=='user') 
                                     <li><i class="ti-user"></i> <a href="{{route('user')}}"  target="_blank">Dashboard</a></li>
+                                @else
+                                    <li><i class="ti-user"></i> <a href="{{route('user-pro')}}"  target="_blank">Dashboard</a></li>  
                                 @endif
                                 <li><i class="ti-power-off"></i> <a href="{{route('user.logout')}}">Logout</a></li>
 
@@ -85,6 +87,11 @@
                                             <option>{{ $cat->title }}</option>
                                         @endforeach
                                     @endif
+                                @else
+                                    <option>All Categories</option>
+                                    @foreach(Helper::getAllCategory() as $cat)
+                                        <option>{{ $cat->title }}</option>
+                                    @endforeach
                                 @endauth
                             </select>
                             <form method="POST" action="{{ route('product.search') }}">

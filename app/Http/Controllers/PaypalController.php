@@ -1,55 +1,84 @@
 <?php
 
 namespace App\Http\Controllers;
-use Srmklive\PayPal\Services\ExpressCheckout;
-use Illuminate\Http\Request;
-use NunoMaduro\Collision\Provider;
+
 use App\Models\Cart;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use NunoMaduro\Collision\Provider;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use DB;
+
 class PaypalController extends Controller
 {
     public function payment()
     {
-        $cart = Cart::where('user_id',auth()->user()->id)->where('order_id',null)->get()->toArray();
-        
-        $data = [];
-        
-        // return $cart;
-        $data['items'] = array_map(function ($item) use($cart) {
-            $name=Product::where('id',$item['product_id'])->pluck('title');
-            return [
-                'name' =>$name ,
-                'price' => $item['price'],
-                'desc'  => 'Thank you for using paypal',
-                'qty' => $item['quantity']
+        $cart = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->get()->toArray();
+
+        $purchase_units = [];
+        foreach ($cart as $item) {
+            $product = Product::find($item['product_id']);
+            $purchase_units[] = [
+                'reference_id' => 'item_' . $item['id'],  // Ensure this is unique
+                'amount' => [
+                    'currency_code' => 'USD',
+                    'value' => $item['price'] * $item['quantity'],
+                    'breakdown' => [
+                        'item_total' => [
+                            'currency_code' => 'USD',
+                            'value' => $item['price'] * $item['quantity']
+                        ]
+                    ]
+                ],
+                'items' => [
+                    [
+                        'name' => $product->title,
+                        'unit_amount' => [
+                            'currency_code' => 'USD',
+                            'value' => $item['price']
+                        ],
+                        'quantity' => $item['quantity']
+                    ]
+                ]
             ];
-        }, $cart);
-
-        $data['invoice_id'] ='ORD-'.strtoupper(uniqid());
-        $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
-        $data['return_url'] = route('payment.success');
-        $data['cancel_url'] = route('payment.cancel');
-
-        $total = 0;
-        foreach($data['items'] as $item) {
-            $total += $item['price']*$item['qty'];
         }
 
-        $data['total'] = $total;
-        if(session('coupon')){
-            $data['shipping_discount'] = session('coupon')['value'];
-        }
-        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => session()->get('id')]);
+        $data = [
+            'intent' => 'CAPTURE',
+            'purchase_units' => $purchase_units,
+            'application_context' => [
+                'return_url' => route('payment.success'),
+                'cancel_url' => route('payment.cancel')
+            ]
+        ];
 
         // return session()->get('id');
-        $provider = new ExpressCheckout;
-  
-        $response = $provider->setExpressCheckout($data);
-    
-        return redirect($response['paypal_link']);
+
+        $provider = new PayPalClient;
+
+        $config = config('paypal');
+
+        $provider->setApiCredentials($config);
+
+        \Log::debug('PayPal Config:', $config);  // Check if the config values are loaded
+
+        $paypalToken = $provider->getAccessToken();
+
+        // $provider->setCurrency('EUR');
+
+        $response = $provider->createOrder($data);
+        // dd($response);
+        // Check if the order creation was successful
+        if (isset($response['id']) && isset($response['links'])) {
+            foreach ($response['links'] as $link) {
+                if ($link['rel'] == 'approve') {
+                    // Redirect the customer to this URL to approve the payment
+                    return redirect($link['href']);
+                }
+            }
+        }
     }
-   
+
     /**
      * Responds with a welcome message with instructions
      *
@@ -59,26 +88,39 @@ class PaypalController extends Controller
     {
         dd('Your payment is canceled. You can create cancel page here.');
     }
-  
+
     /**
      * Responds with a welcome message with instructions
      *
      * @return \Illuminate\Http\Response
      */
     public function success(Request $request)
-    {
-        $provider = new ExpressCheckout;
-        $response = $provider->getExpressCheckoutDetails($request->token);
-        // return $response;
-  
-        if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
-            request()->session()->flash('success','You successfully pay from Paypal! Thank You');
+    {   
+        dd($request);
+        $provider = new PayPalClient;
+        $config = config('paypal');
+        $provider->setApiCredentials($config);
+     
+        // Capture payment after the customer returns
+        $paypalToken = $provider->getAccessToken();
+        // dd($paypalToken);
+        $response = $provider->capturePaymentOrder($paypalToken['access_token']);
+        dd($response);
+
+        if ($response['status'] == 'COMPLETED') {
+            request()->session()->flash('success', 'You successfully pay from PayPal! Thank You');
             session()->forget('cart');
             session()->forget('coupon');
             return redirect()->route('home');
         }
-  
-        request()->session()->flash('error','Something went wrong please try again!!!');
+
+        request()->session()->flash('error', 'Something went wrong please try again!!!');
         return redirect()->back();
     }
 }
+
+// public function cancel()
+// {
+//     request()->session()->flash('error', 'Payment was cancelled!');
+//     return redirect()->back();
+// }

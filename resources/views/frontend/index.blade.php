@@ -2,17 +2,17 @@
 @section('title', 'ECO-Services || HOME')
 @section('main-content')
     <!-- Slider Area -->
-    @if (count($banners) > 0)
+    <!-- Slider Area -->
+    @if (count($banners_active) > 0)
         <section id="Gslider" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                @foreach ($banners as $key => $banner)
+                @foreach ($banners_active as $key => $banner)
                     <li data-target="#Gslider" data-slide-to="{{ $key }}" class="{{ $key == 0 ? 'active' : '' }}">
                     </li>
                 @endforeach
-
             </ol>
             <div class="carousel-inner" role="listbox">
-                @foreach ($banners as $key => $banner)
+                @foreach ($banners_active as $key => $banner)
                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                         <img class="first-slide" src="{{ $banner->photo }}" alt="First slide">
                         <div class="carousel-caption d-none d-md-block text-left">
@@ -34,6 +34,7 @@
             </a>
         </section>
     @endif
+    <!--/ End Slider Area -->
 
     <!--/ End Slider Area -->
 
@@ -585,7 +586,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script>
         /*==================================================================
-            [ Isotope ]*/
+                            [ Isotope ]*/
         var $topeContainer = $('.isotope-grid');
         var $filter = $('.filter-tope-group');
 

@@ -42,24 +42,29 @@ class FrontendController extends Controller
     {
         $featured = Product::where('status', 'active')->where('is_featured', 1)->orderBy('price', 'DESC')->limit(2)->get();
         $posts = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
-        $banners = Banner::where('status', 'active')->limit(3)->orderBy('id', 'DESC')->get();
+        $banners_active = Banner::where('status', 'active')->limit(3)->orderBy('id', 'DESC')->get();
+        $banners = Banner::orderBy('id', 'DESC')->limit(3)->get();
         // return $banner;
         $products = Product::where('status', 'active')->orderBy('id', 'DESC')->limit(8)->get();
         $category = Category::where('status', 'active')->where('is_parent', 1)->orderBy('title', 'ASC')->get();
         // return $category;
-        $role= $request->user()->role;
-        if ($role == 'user_pro') {
-            return view('frontend.index-pro')
-            ->with('featured', $featured)
-            ->with('posts', $posts)
-            ->with('banners', $banners)
-            ->with('product_lists', $products)
-            ->with('category_lists', $category);
+        if (auth()->check()) {
+            // If authenticated, check the role
+            $role = $request->user()->role;
+            if ($role == 'user_pro') {
+                return view('frontend.index-pro')
+                    ->with('featured', $featured)
+                    ->with('posts', $posts)
+                    ->with('banners', $banners)
+                    ->with('product_lists', $products)
+                    ->with('category_lists', $category);
+            }
         }
         return view('frontend.index')
             ->with('featured', $featured)
             ->with('posts', $posts)
             ->with('banners', $banners)
+            ->With('banners_active', $banners_active)
             ->with('product_lists', $products)
             ->with('category_lists', $category);
     }

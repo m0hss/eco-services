@@ -32,6 +32,8 @@
 <!-- Jquery Ui -->
 <link rel="stylesheet" href="{{asset('frontend/css/jquery-ui.css')}}">
 
+<link rel="stylesheet" href="{{asset('frontend/css/styles-pro.css')}}">
+
 <!-- EcoServices StyleSheet -->
 <link rel="stylesheet" href="{{asset('frontend/css/reset.css')}}">
 <link rel="stylesheet" href="{{asset('frontend/css/style.css')}}">

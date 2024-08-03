@@ -3572,19 +3572,19 @@
     display: block;
     justify-content: center;
     gap: 20px;
-    width: 80%; 
+    width: 80%;
 }
 
 .shop.login .radio-btn {
     display: flex;
     align-items: center;
-    padding: 5px 10px; 
+    padding: 5px 10px;
     cursor: pointer;
 }
 
 .shop.login .radio-btn input[type="radio"] {
-    margin-right: 8px; 
-    cursor: pointer; 
+    margin-right: 8px;
+    cursor: pointer;
     width: auto;
     height: auto;
     margin: 8px 8px 8px 15%;
@@ -3593,8 +3593,8 @@
     margin-bottom: 0;
 }
 .shop.login .radio-btn label {
-    color: #333; 
-    cursor: pointer; 
+    color: #333;
+    cursor: pointer;
     margin: 0;
 }
 /*======================================
@@ -4693,11 +4693,10 @@
   Services CSS
 ========================================*/
 
-
 .services {
     padding-top: 42px;
     padding-bottom: 75px;
-  }
+}
 .services .well-title {
     text-transform: uppercase;
     color: #f7941d;
@@ -4708,19 +4707,18 @@
     margin: auto;
     padding-top: 22px;
 }
-  
+
 .services .container .grid_6 h3 {
-  color: #404b52;
-  text-transform: uppercase;
-  margin-top: 18px;
-  }
+    color: #404b52;
+    text-transform: uppercase;
+    margin-top: 18px;
+}
 .services .container .grid_6 p {
     margin-top: 18px;
-  }
+}
 .services .container .grid_6 .btn {
     margin-top: 15px;
 }
-
 
 .well9 {
     background-color: #eaeff3;
@@ -4728,26 +4726,25 @@
 }
 .well9 .container {
     max-width: 1500px;
-
 }
-.well9 .well-title h2{
+.well9 .well-title h2 {
     text-transform: uppercase;
     font: 700 38px/38px;
     color: #404b52;
     text-align: center;
     margin-top: 21px;
 }
-.well9 .well-title p{
-  text-transform: none;
-  color: #404b52;
-  font-size: 22px;
-  text-align: center;
-  margin-top: 21px;
+.well9 .well-title p {
+    text-transform: none;
+    color: #404b52;
+    font-size: 22px;
+    text-align: center;
+    margin-top: 21px;
 }
 
 .well9 .index-list {
-  counter-reset: li;
-  margin-top: 48px;
+    counter-reset: li;
+    margin-top: 48px;
 }
 
 .well9 .index-list li {
@@ -4756,21 +4753,21 @@
     padding: 30px 33px 22px 82px;
     border: 1px solid #ededed;
     margin-bottom: 12px;
-  }
-  .well9 .index-list p {
+}
+.well9 .index-list p {
     color: #9b9b9b;
     font-size: 24px;
     line-height: 21px;
-  }
-  .well9 .index-list li::before {
+}
+.well9 .index-list li::before {
     content: counter(li) ".";
     counter-increment: li;
-    font: 700 30px/12px 'Archivo Narrow', sans-serif;
+    font: 700 30px/12px "Archivo Narrow", sans-serif;
     color: #dc6226;
     position: absolute;
     left: 34px;
     top: 32px;
-  }
+}
 
 /*======================================
   End Services CSS

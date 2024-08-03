@@ -1,10 +1,10 @@
 
 <!-- Start Shop Newsletter  -->
-<section class="shop-newsletter section">
+<section class="shop-newsletter section" style="margin-top:2%">
     <div class="container">
         <div class="inner-top">
             <div class="row">
-                <div class="col-lg-8 offset-lg-2 col-12">
+                <div class="col-lg-8 offset-lg-2 col-12" style="max-width: none;">
                     <!-- Start Newsletter Inner -->
                     <div class="inner">
                         <h4>Newsletter</h4>
