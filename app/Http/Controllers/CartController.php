@@ -27,14 +27,13 @@ class CartController extends Controller
             return back();
         }
         $product = Product::where('slug', $request->slug)->first();
-        // return $product;
+
         if (empty($product)) {
             request()->session()->flash('error', 'Invalid Products');
             return back();
         }
-
         $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->where('product_id', $product->id)->first();
-        // return $already_cart;
+
         if ($already_cart) {
             // dd($already_cart);
             $already_cart->quantity = $already_cart->quantity + 1;

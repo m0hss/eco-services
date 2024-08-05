@@ -95,7 +95,7 @@
                                         <td></td>
                                         <td class="" style="padding: 0px;">
                                             <a href="{{ route('cart-empty') }}" class="btn float-right"
-                                                style="margin-bottom:5px; color:white; padding-top: 9px; width:118px; height:41px; font-weight:500; font-size:15px; text-align:center;">
+                                                style="margin-bottom:2px; color:white; padding-top: 9px; width:118px; height:41px; font-weight:500; font-size:15px; text-align:center;">
                                                 Empty
                                             </a>
                                         </td>

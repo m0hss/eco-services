@@ -89,8 +89,9 @@ class OrderController extends Controller
         }
         // return $order_data['total_amount'];
         $order_data['status'] = 'pending';
-
+        
         if (request('payment_method') == 'paypal') {
+            
             $order_data['payment_method'] = 'paypal';
             $order_data['payment_status'] = 'paid';
         } elseif (request('payment_method') == 'card') {
@@ -106,8 +107,8 @@ class OrderController extends Controller
         $request->session()->put('last_order_id', $order->id);
 
         // Check all session data
-        // dd(session()->all());
-
+        // 
+        // dd($order_data);
         if ($order)
             // dd($order->id);
             $users = User::where('role', 'admin')->first();
@@ -119,6 +120,7 @@ class OrderController extends Controller
         Notification::send($users, new StatusNotification($details));
 
         if (request('payment_method') == 'paypal') {
+            
             return redirect()->route('paypal')->with(['id' => $order->id]);
         } elseif (request('payment_method') == 'card') {
             return redirect()->route('stripe')->with(['id' => $order->id]);

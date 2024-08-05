@@ -3,7 +3,7 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('user')}}">
       <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-laugh-wink"></i>
+        <i class="fas fa-laugh-wink" style="padding-right: 0px;"></i>
       </div>
       <div class="sidebar-brand-text mx-3">
         @if(auth()->check() && auth()->user()->role == 'user_pro')
@@ -66,7 +66,7 @@
       </a>
     </li>
     <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
+    <div class="text-center d-md-inline" style="height: 100%; align-content: flex-end;">
       <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
 

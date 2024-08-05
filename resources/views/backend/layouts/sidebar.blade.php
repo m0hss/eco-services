@@ -201,7 +201,7 @@
     </li>
 
     <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
+    <div class="text-center d-md-inline" style="height: 100%; align-content: flex-end;">
       <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
 

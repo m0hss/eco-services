@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Services\CartService;
 use App\Models\Product;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class PaypalController extends Controller
         $cart = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->get()->toArray();
 
         $purchase_units = [];
+        
         foreach ($cart as $item) {
             $product = Product::find($item['product_id']);
             $purchase_units[] = [
@@ -35,7 +37,7 @@ class PaypalController extends Controller
                     [
                         'name' => $product->title,
                         'unit_amount' => [
-                            'currency_code' => 'USD',
+                            'currency_code' => 'EUR',
                             'value' => $item['price']
                         ],
                         'quantity' => $item['quantity']
@@ -54,7 +56,8 @@ class PaypalController extends Controller
         ];
 
         // return session()->get('id');
-
+        // 
+        // dd(session()->all());
         $provider = new PayPalClient;
 
         $config = config('paypal');
@@ -66,7 +69,7 @@ class PaypalController extends Controller
         $paypalToken = $provider->getAccessToken();
 
         $provider->setCurrency('EUR');
-
+        
         $response = $provider->createOrder($data);
         // dd($response);
         // Check if the order creation was successful
@@ -80,7 +83,7 @@ class PaypalController extends Controller
         }
     }
 
-    public function success(Request $request)
+    public function success(Request $request, CartService $cartService)
     {
         // dd($request);
         $provider = new PayPalClient;
@@ -110,6 +113,9 @@ class PaypalController extends Controller
             request()->session()->flash('success', 'You successfully pay from PayPal, Thank You 🎉🎉');
             session()->forget('cart');
             session()->forget('coupon');
+
+            $cartService->clearCart(auth()->user()->id);
+
             return redirect()->route('user.order.index');
         }
 

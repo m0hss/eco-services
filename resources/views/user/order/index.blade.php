@@ -52,7 +52,7 @@
                     <td>€{{ $order->shipping?->price ? $order->shipping->price : '0.00' }}</td>
                     <td>€{{number_format($order->total_amount,2)}}</td>
                     <td>
-                        @if($order->status=='new')
+                        @if($order->status=='pending')
                           <span class="badge badge-primary">{{$order->status}}</span>
                         @elseif($order->status=='process')
                           <span class="badge badge-warning">{{$order->status}}</span>

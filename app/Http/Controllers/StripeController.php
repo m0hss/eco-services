@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\CartService;
 use Illuminate\Http\Request;
 use NunoMaduro\Collision\Provider;
-use App\Http\Controllers\CartController;
 use DB;
 
 class StripeController extends Controller
@@ -48,7 +48,6 @@ class StripeController extends Controller
         })->toArray();
 
         // dd($lineItems);
-
         try {
             // Create a Stripe checkout session
             $session = $stripe->checkout->sessions->create([
@@ -59,34 +58,29 @@ class StripeController extends Controller
             ]);
 
             // Redirect to Stripe checkout page
-            // dd($session);
             return redirect($session->url);
         } catch (\Exception $e) {
-            // Log the error for debugging purposes
             \Log::debug('PayPal Order Response:', $e->getMessage());
-
-            // Redirect to the cancel route with an error message
             return redirect()->route('stripe.cancel')->with('error', 'Failed to create a payment session. Please try again.');
         }
     }
 
-    public function success(Request $request)
+    public function success(Request $request, CartService $cartService)
     {
         // Handle successful payment
-        // $sessionId = $request->query('session_id');
-        // dd($sessionId);
         $stripe = new \Stripe\StripeClient(config('stripe.stripe_sk'));
-        // dd($request->session_id);
+
         $response = $stripe->checkout->sessions->retrieve($request->session_id);
-        // dd($response);
 
         if ($response['status'] == 'complete') {
             request()->session()->flash('success', 'Payment was successful, Thank You 🎉🎉');
             // dd(session()->all());
+
             $request->session()->forget('cart');
             $request->session()->forget('coupon');
-            $cartController = new CartController();
-            $cartController->emptyCart();
+
+            $cartService->clearCart(auth()->user()->id);
+
             return redirect()->route('user.order.index');
         }
 

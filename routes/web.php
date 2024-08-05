@@ -91,6 +91,7 @@ Route::get('wishlist-delete/{id}', [WishlistController::class, 'wishlistDelete']
 Route::post('cart/order', [OrderController::class, 'store'])->name('cart.order');
 Route::get('order/pdf/{id}', [OrderController::class, 'pdf'])->name('order.pdf');
 Route::get('/income', [OrderController::class, 'incomeChart'])->name('product.order.income');
+
 // Route::get('/user/chart',[AdminController::class, 'userPieChart'])->name('user.piechart');
 Route::get('/product-grids', [FrontendController::class, 'productGrids'])->name('product-grids');
 Route::get('/product-lists', [FrontendController::class, 'productLists'])->name('product-lists');
@@ -121,7 +122,7 @@ Route::post('/coupon-store', [CouponController::class, 'couponStore'])->name('co
 
 // Paypal Payment
 Route::get('paypal', [PaypalController::class, 'payment'])->name('paypal');
-Route::get('cancel', [PaypalController::class, 'cancel'])->name('paypal.cancel');
+Route::get('paypal/cancel', [PaypalController::class, 'cancel'])->name('paypal.cancel');
 Route::get('payment/success', [PaypalController::class, 'success'])->name('paypal.success');
 
 // Stripe Payment
