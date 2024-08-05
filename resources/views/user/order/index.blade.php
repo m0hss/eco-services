@@ -49,7 +49,7 @@
                     <td>{{$order->first_name}} {{$order->last_name}}</td>
                     <td>{{$order->email}}</td>
                     <td>{{$order->quantity}}</td>
-                    <td>€{{$order->shipping?->price}}</td>
+                    <td>€{{ $order->shipping?->price ? $order->shipping->price : '0.00' }}</td>
                     <td>€{{number_format($order->total_amount,2)}}</td>
                     <td>
                         @if($order->status=='new')
@@ -76,7 +76,7 @@
         </table>
         <span style="float:right">{{$orders->links()}}</span>
         @else
-          <h6 class="text-center">No orders found!!! Please order some products</h6>
+          <h6 class="text-center">No orders yet !</h6>
         @endif
       </div>
     </div>

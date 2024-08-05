@@ -120,7 +120,7 @@
                                     <div class="shop-shorter">
                                         <div class="single-shorter">
                                             <label>Show :</label>
-                                            <select class="show" name="show" onchange="this.form.submit();">
+                                            <select style="display: none;" onchange="this.form.submit();">
                                                 <option value="">Default</option>
                                                 <option value="9" @if(!empty($_GET['show']) && $_GET['show']=='9') selected @endif>09</option>
                                                 <option value="15" @if(!empty($_GET['show']) && $_GET['show']=='15') selected @endif>15</option>
@@ -192,7 +192,7 @@
 
                         </div>
                         <div class="row">
-                            <div class="col-md-12 justify-content-center d-flex">
+                            <div class="col-md-12 justify-content-center d-flex" style="margin-top: 9%;">
                                 {{$products->appends($_GET)->links()}}
                             </div>
                           </div>

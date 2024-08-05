@@ -127,7 +127,7 @@
                     <td>{{$order->first_name}} {{$order->last_name}}</td>
                     <td>{{$order->email}}</td>
                     <td>{{$order->quantity}}</td>
-                    <td>${{number_format($order->total_amount,2)}}</td>
+                    <td>€{{number_format($order->total_amount,2)}}</td>
                     <td>
                         @if($order->status=='new')
                           <span class="badge badge-primary">{{$order->status}}</span>
@@ -150,7 +150,7 @@
                 </tr>  
               @endforeach
               @else
-                <td colspan="8" class="text-center"><h4 class="my-4">You have no order yet!! Please order some products</h4></td>
+                <td colspan="8" class="text-center"><h4 class="my-4">You have no order yet !! </h4></td>
               @endif
           </tbody>
         </table>

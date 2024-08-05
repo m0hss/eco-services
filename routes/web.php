@@ -13,6 +13,7 @@ use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use \UniSharp\LaravelFilemanager\Lfm;
@@ -71,6 +72,8 @@ Route::get('/add-to-cart/{slug}', [CartController::class, 'addToCart'])->name('a
 Route::post('/add-to-cart', [CartController::class, 'singleAddToCart'])->name('single-add-to-cart')->middleware('user');
 Route::get('cart-delete/{id}', [CartController::class, 'cartDelete'])->name('cart-delete');
 Route::post('cart-update', [CartController::class, 'cartUpdate'])->name('cart.update');
+Route::get('cart-empty', [CartController::class, 'emptyCart'])->name('cart-empty');
+
 
 Route::get('/cart', function () {
     return view('frontend.pages.cart');
@@ -83,6 +86,8 @@ Route::get('/wishlist', function () {
 })->name('wishlist');
 Route::get('/wishlist/{slug}', [WishlistController::class, 'wishlist'])->name('add-to-wishlist')->middleware('user');
 Route::get('wishlist-delete/{id}', [WishlistController::class, 'wishlistDelete'])->name('wishlist-delete');
+
+// Order Details
 Route::post('cart/order', [OrderController::class, 'store'])->name('cart.order');
 Route::get('order/pdf/{id}', [OrderController::class, 'pdf'])->name('order.pdf');
 Route::get('/income', [OrderController::class, 'incomeChart'])->name('product.order.income');
@@ -113,13 +118,18 @@ Route::post('post/{slug}/comment', [PostCommentController::class, 'store'])->nam
 Route::resource('/comment', 'PostCommentController');
 // Coupon
 Route::post('/coupon-store', [CouponController::class, 'couponStore'])->name('coupon-store');
-// Payment
-Route::get('payment', [PaypalController::class, 'payment'])->name('payment');
-Route::get('cancel', [PaypalController::class, 'cancel'])->name('payment.cancel');
-Route::get('payment/success', [PaypalController::class, 'success'])->name('payment.success');
+
+// Paypal Payment
+Route::get('paypal', [PaypalController::class, 'payment'])->name('paypal');
+Route::get('cancel', [PaypalController::class, 'cancel'])->name('paypal.cancel');
+Route::get('payment/success', [PaypalController::class, 'success'])->name('paypal.success');
+
+// Stripe Payment
+Route::get('stripe', [StripeController::class, 'stripe'])->name('stripe');
+Route::get('stripe/cancel', [StripeController::class, 'cancel'])->name('stripe.cancel');
+Route::get('stripe/success', [StripeController::class, 'success'])->name('stripe.success');
 
 // Backend section start
-
 Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
     Route::get('/file-manager', function () {
@@ -171,7 +181,7 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'admin']], function
 Route::group(['prefix' => '/user', 'middleware' => ['user']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('user');
     // Profile
-    Route::get('/profile', [HomeController::class, 'profile'])->name('user-profile');
+    Route::get('/profile', [HomeController::class, 'profile'])->name('  file');
     Route::post('/profile/{id}', [HomeController::class, 'profileUpdate'])->name('user-profile-update');
     //  Order
     Route::get('/order', 'HomeController@orderIndex')->name('user.order.index');
